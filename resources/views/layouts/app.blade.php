@@ -22,7 +22,7 @@
 
             <nav>
                 <a class="font-bold uppercase text-gray-600" href="">Login</a>
-                <a class="font-bold uppercase text-gray-600" href="/crear-cuenta">Crear Cuenta</a>
+                <a class="font-bold uppercase text-gray-600" href="{{ route('register') }}">Crear Cuenta</a>
             </nav>
 
         </div>

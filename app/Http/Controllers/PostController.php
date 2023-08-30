@@ -10,12 +10,15 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['show', 'index']);
     }
     
     public function index(User $user){
+        $posts = Post::where('user_id', $user->id)->paginate(10);
+
         return view('dashboard',[
-            'user' => $user
+            'user' => $user,
+            'posts' => $posts
         ]);
     }
 
@@ -31,7 +34,24 @@ class PostController extends Controller
             'imagen' => 'required'
         ]);
 
-        Post::create([
+        //forma uno de guardar los datos, directo al modelo
+        // Post::create([
+        //     'titulo' => $request->titulo,
+        //     'descripcion' => $request->descripcion,
+        //     'imagen' => $request->imagen,
+        //     'user_id' => auth()->user()->id
+        // ]);
+
+        //forma dos de guardar los datos, instanciando el modelo
+        // $post = new Post;
+        // $post->titulo = $request->titulo;
+        // $post->descripcion = $request->descripcion;
+        // $post->imagen = $request->imagen;
+        // $post->user_id = auth()->user()->id;
+        // $post->save();
+
+        //forma tres de guardar los datos, accediendo a la relacion
+        $request->user()->posts()->create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'imagen' => $request->imagen,
@@ -41,4 +61,16 @@ class PostController extends Controller
         return redirect()->route('posts.index', auth()->user()->username );
 
     }
+
+
+    public function show(User $user, Post $post) {
+        return view('posts.show', [
+            'user' => $user,
+            'post' => $post
+        ]);
+
+}
+
+
+
 }

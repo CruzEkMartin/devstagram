@@ -12,21 +12,24 @@ class PostController extends Controller
     {
         $this->middleware('auth')->except(['show', 'index']);
     }
-    
-    public function index(User $user){
+
+    public function index(User $user)
+    {
         $posts = Post::where('user_id', $user->id)->paginate(10);
 
-        return view('dashboard',[
+        return view('dashboard', [
             'user' => $user,
             'posts' => $posts
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         return view('posts.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $this->validate($request, [
             'titulo' => 'required|max:255',
@@ -58,19 +61,25 @@ class PostController extends Controller
             'user_id' => auth()->user()->id
         ]);
 
-        return redirect()->route('posts.index', auth()->user()->username );
-
+        return redirect()->route('posts.index', auth()->user()->username);
     }
 
 
-    public function show(User $user, Post $post) {
+    public function show(User $user, Post $post)
+    {
         return view('posts.show', [
             'user' => $user,
             'post' => $post
         ]);
-
-}
-
+    }
 
 
+    public function destroy(Post $post){
+
+        //verificamos la policy
+        $this->authorize('delete', $post);
+        $post->delete();
+
+        return redirect()->route('posts.index', auth()->user()->username);
+    }
 }

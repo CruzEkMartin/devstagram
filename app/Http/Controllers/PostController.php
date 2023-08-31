@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -15,7 +16,7 @@ class PostController extends Controller
 
     public function index(User $user)
     {
-        $posts = Post::where('user_id', $user->id)->paginate(10);
+        $posts = Post::where('user_id', $user->id)->latest()->paginate(10);
 
         return view('dashboard', [
             'user' => $user,
@@ -79,6 +80,12 @@ class PostController extends Controller
         //verificamos la policy
         $this->authorize('delete', $post);
         $post->delete();
+
+        //eliminar la imagen
+        $imagen_path = public_path('uploads/' . $post->imagen);
+        if(File::exists($imagen_path)){
+            unlink($imagen_path);
+        }
 
         return redirect()->route('posts.index', auth()->user()->username);
     }

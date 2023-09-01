@@ -38,9 +38,9 @@
                         </form>
                     @endif --}}
                 @endauth
-                <p class="font-bold"> {{ $post->likes->count() }}
+                {{-- <p class="font-bold"> {{ $post->likes->count() }}
                     <span class="font-normal"> Likes</span>
-                </p>
+                </p> --}}
             </div>
 
             <div>

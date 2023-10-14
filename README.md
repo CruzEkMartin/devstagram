@@ -3,7 +3,7 @@
 
 <br/>
 
-## Acerca de DevJobs
+## Acerca de Devstagram
 <br/>
 1er Proyecto del Curso de Laravel 9 de Juan Pablo de la Torre. Clon de Instagram para developers realizado con PHP 8 , MVC, Tailwind Css, Livewire y Dropzone.
 <br/>
